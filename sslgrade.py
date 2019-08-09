@@ -61,11 +61,12 @@ def start_test():
     test_status_url = "{}analyze?host={}&publish=off&analyze&startNew=on&ignoreMismatch=on".format(ssllabs_api_url,domain)
     response = requests.get(test_status_url)
 
-    if response.status_code == 200:
-        return json.loads(response.content.decode('utf-8'))
-    else:
-        return None
+    if response.status_code != 200:
+        print('Status:', response.status_code, 'Problem with the request. Exiting.')
+        exit()
 
+    print("Waiting for test to finish")
+    time.sleep( 10 )
 
 def wait_for_test():
 
@@ -87,7 +88,6 @@ def wait_for_test():
         pprint.pprint(data)
         print("")
 
-    print("Waiting for test to finish")
     while status != "Ready":
         time.sleep( 3 )
         response = requests.get(test_status_url)
