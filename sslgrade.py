@@ -137,7 +137,7 @@ def test_result_print():
     
     protocols_formatted = ""
     for x in data['details']['protocols']:
-        protocols = (x['version']).replace('\b', ' ')
+        protocols = (x['version'])
         protocols_formatted += protocols + ' '
    
 
