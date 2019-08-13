@@ -154,7 +154,7 @@ def test_result_print():
     elif certchain == 8:
        certchain = "the certificates form chain (trusted or not), but the order is incorrect"
     elif certchain == 16:
-       certchain = "contains a self-signed certificate"
+       certchain = "contains a self-signed root certificate"
     elif certchain == 32:
        certchain = "the certificates form a chain, but we could not validate it"
     
