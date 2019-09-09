@@ -19,7 +19,7 @@ except:
     print("Domain doesn't have DNS record")
     exit(1)
 
-ssllabs_api_url= "https://api.dev.ssllabs.com/api/v2/"
+ssllabs_api_url= "https://api.ssllabs.com/api/v3/"
 
 def check_test_status():
 
@@ -94,8 +94,11 @@ def wait_for_test():
         data = response.json()
         status = data['endpoints'][0]['statusMessage']
 
-        percentage = data['endpoints'][0]['progress']
-        if percentage < 0:
+        try:
+            percentage = data['endpoints'][0]['progress']
+            if percentage < 0:
+                percentage = "0"
+        except:
             percentage = "0"
 
         progress = " Progress: {} %".format(percentage)
@@ -105,10 +108,9 @@ def wait_for_test():
 
         response = requests.get(test_status_url)
         data = response.json()
-       	status = data['endpoints'][0]['statusMessage']
+        status = data['endpoints'][0]['statusMessage']
 
 def test_result_print():
-
 
     test_status_url = "{}analyze?host={}&publish=off&analyze".format(ssllabs_api_url,domain)
     response = requests.get(test_status_url)
@@ -133,14 +135,14 @@ def test_result_print():
 
     data = response.json()
 
-    certchain = data['details']['chain']['issues']
+    certchain = data['details']['certChains'][0]['issues']
     
     protocols_formatted = ""
     for x in data['details']['protocols']:
         protocols = (x['version'])
         protocols_formatted += protocols + ' '
    
-
+    print("")
     print("")
     print("SSL Labs test results for:", domain)
     print("Grade:", grade)
